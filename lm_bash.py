@@ -118,13 +118,18 @@ if __name__ == "__main__":
             stream=True
         )
 
+        # initialise store for the entire content of assistant response
         fullContent = []
         print(f"{Style.NORMAL}{Fore.RED}<assistant>: {Style.RESET_ALL}", end="", flush=True)
+
+        # process stream, printing as chunks generated
         for chunk in stream:
             if chunk.choices[0].delta.content is not None:
                 fullContent.append(chunk.choices[0].delta.content)
                 print(f"{Style.NORMAL}{Fore.RED}{chunk.choices[0].delta.content}{Style.RESET_ALL}", end="", flush=True)
         
         print()
+
+        # add response to messageStore
         modelResponse = {"role": "assistant", "content": "".join(fullContent)}
         messageStore.append(modelResponse)
